@@ -8,12 +8,12 @@ import 'blocs/navigator_bloc.dart';
 import 'blocs/onboarding_bloc.dart';
 import 'blocs/theme_bloc.dart';
 import 'entities/entity_bloc.dart';
+import 'modules/counter/blocs/counter_bloc.dart';
+import 'modules/counter/ui/page/counter_home_page.dart';
 import 'providers/my_app_navigator_provider.dart';
 import 'services/theme_config.dart';
 import 'services/theme_service.dart';
 import 'ui/pages/my_onboarding_page.dart';
-import 'ui/pages/test_screen_ii_page.dart';
-import 'ui/pages/test_screen_widgets_page.dart';
 
 /// Zona de configuración inicial
 final BlocCore blocCore = BlocCore();
@@ -44,6 +44,11 @@ void onboarding([
       DrawerMainMenuBloc(),
     );
 
+    blocCore.addBlocModule<CounterBloc>(
+      CounterBloc.name,
+      CounterBloc(),
+    );
+
     /// register onboarding
     blocCore.addBlocModule(
       OnboardingBloc.name,
@@ -68,6 +73,7 @@ void onboarding([
             //      .setHomePage(
             //        const MyHomePage(title: 'Onboarding cargado'),
             //      );
+            /*
             blocCore
                 .getBlocModule<NavigatorBloc>(NavigatorBloc.name)
                 .setHomePage(TestScreenIIPage(
@@ -93,24 +99,19 @@ void onboarding([
                     ),
                   );
             });
-
-            /*
-            Future.delayed(const Duration(seconds: 10), () {
+*/
+            await Future.delayed(const Duration(seconds: 10), () {
               blocCore
                   .getBlocModule<NavigatorBloc>(NavigatorBloc.name)
-                  .pushPage(
-                    'Counter demo',
-                    TestScreenWidgetsPage(
-                      blocResponsive: blocCore
-                          .getBlocModule<ResponsiveBloc>(ResponsiveBloc.name),
-                      drawerSecondaryMenuBloc:
-                          blocCore.getBlocModule<DrawerSecondaryMenuBloc>(
-                              DrawerSecondaryMenuBloc.name),
-                    ),
+                  .setHomePage(
+                    const CounterHomePage(),
                   );
             });
-
-            */
+            await Future.delayed(const Duration(milliseconds: 200), () {
+              blocCore
+                  .getBlocModule<NavigatorBloc>(NavigatorBloc.name)
+                  .update();
+            });
           }
         ],
       ),
