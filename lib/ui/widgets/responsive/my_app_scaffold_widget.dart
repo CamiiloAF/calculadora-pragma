@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import '../../../app_config.dart';
@@ -27,23 +25,15 @@ class MyAppScaffold extends StatefulWidget {
 }
 
 class _MyAppScaffoldState extends State<MyAppScaffold> {
-  late StreamSubscription<Size> streamSubscription;
+  late ResponsiveBloc responsiveBloc;
+
   int errorCount = 0;
 
   @override
   void initState() {
     super.initState();
-    streamSubscription = blocCore
-        .getBlocModule<ResponsiveBloc>(ResponsiveBloc.name)
-        .appScreenSizeStream
-        .listen((event) {
-      try {
-        setState(() {});
-      } catch (e) {
-        errorCount++;
-        debugPrint('No es posible establecer el estado $errorCount');
-      }
-    });
+    responsiveBloc =
+        blocCore.getBlocModule<ResponsiveBloc>(ResponsiveBloc.name);
     blocCore
         .getBlocModule<DrawerMainMenuBloc>(DrawerMainMenuBloc.name)
         .drawerKey = GlobalKey<ScaffoldState>();
@@ -52,16 +42,14 @@ class _MyAppScaffoldState extends State<MyAppScaffold> {
   @override
   Widget build(BuildContext context) {
     blocCore.addBlocModule(
-        UserNotificationsBloc.name, UserNotificationsBloc(context));
-    final responsiveBloc =
-        blocCore.getBlocModule<ResponsiveBloc>(ResponsiveBloc.name);
-
+      UserNotificationsBloc.name,
+      UserNotificationsBloc(context),
+    );
+    responsiveBloc.setSizeFromContext(context);
     final drawerBloc =
         blocCore.getBlocModule<DrawerMainMenuBloc>(DrawerMainMenuBloc.name);
     bool isMobile = responsiveBloc.getDeviceType == ScreenSizeEnum.movil;
-    if (isMobile) {
-      responsiveBloc.setSizeFromContext(context);
-    }
+
     Drawer? drawer = _buildDrawer();
     AppBar? appbar = _buildAppBar();
     Widget? floatingActionButtons = _buildFloatingActionMenu();
