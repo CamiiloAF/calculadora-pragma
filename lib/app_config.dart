@@ -10,6 +10,7 @@ import 'blocs/theme_bloc.dart';
 import 'entities/entity_bloc.dart';
 import 'modules/counter/blocs/counter_bloc.dart';
 import 'modules/counter/ui/page/counter_home_page.dart';
+import 'modules/triqui/blocs/triqui_bloc.dart';
 import 'providers/my_app_navigator_provider.dart';
 import 'services/theme_config.dart';
 import 'services/theme_service.dart';
@@ -30,6 +31,11 @@ void onboarding([
   /// Register modules to use
   /// Inicializamos el responsive y la ux del usuario
   if (!_init) {
+    blocCore.addBlocModule<TriquiBloc>(
+      TriquiBloc.name,
+      TriquiBloc(blocCore),
+    );
+
     blocCore.addBlocModule<ResponsiveBloc>(
       ResponsiveBloc.name,
       ResponsiveBloc(),

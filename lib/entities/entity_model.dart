@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-abstract class Model {
+abstract class ModelEntity {
   /// TODO: complete the model abstract class according to firestore documentation
   Map<String, dynamic> toJson() {
     return {};
   }
 
-  Model fromJson(Map<String, dynamic> source);
+  ModelEntity fromJson(Map<String, dynamic> source);
 
   @override
   String toString() {

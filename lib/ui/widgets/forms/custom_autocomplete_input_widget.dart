@@ -24,7 +24,7 @@ class CustomAutoCompleteInputWidget extends StatefulWidget {
   final List<String> suggestList;
   final IconData? icondata;
   final String placeholder, label;
-  final void Function(String val) onEditingValueFunction;
+  final String? Function(String val) onEditingValueFunction;
   final String? initialData;
   final String? Function(String val) onEditingValidateFunction;
   final TextInputType keyboardType;
@@ -52,7 +52,7 @@ class _CustomAutoCompleteInputWidgetState
 
   void _onValidate(String val) {
     setState(() {
-      errorText = widget.onEditingValidateFunction(val);
+      errorText = widget.onEditingValueFunction(val);
     });
   }
 
