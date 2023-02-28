@@ -1,9 +1,10 @@
+import 'package:aleteo_triqui/blocs/bloc_responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../app_config.dart';
 import '../../blocs/triqui_bloc.dart';
-import '../../helpers/utils.dart';
+import '../../helpers/helpers.dart';
 
 class BuildTresEnRaya extends StatelessWidget {
   const BuildTresEnRaya({
@@ -13,9 +14,11 @@ class BuildTresEnRaya extends StatelessWidget {
   Widget build(BuildContext context) {
     //final optionList = TriquiState.of(context).controllerTriqui.modelList.optionList
     final triquiBloc = blocCore.getBlocModule<TriquiBloc>(TriquiBloc.name);
+    final squareEdge =
+        Responsive.distancePercentFromWidth(context, 51.47).clamp(200.0, 380.0);
     return SizedBox(
-      height: Responsive.distancePercentFromHeight(context, 37.3049),
-      width: Responsive.distancePercentFromWidth(context, 74.2718),
+      height: squareEdge,
+      width: squareEdge,
       child: Expanded(
         flex: 3,
         child: StreamBuilder(
@@ -66,32 +69,33 @@ void displayAlert(BuildContext context, String winner) {
       barrierDismissible: true,
       context: context,
       builder: (context) {
+        final responsiveBloc =
+            blocCore.getBlocModule<ResponsiveBloc>(ResponsiveBloc.name);
+
         return CupertinoAlertDialog(
           content: SizedBox(
-            width: 200.00,
+            width: responsiveBloc.widthByColumns(2),
             //Responsive.distancePercentFromWidth(context, 83.4951),
             child: Row(
               children: [
                 const Icon(Icons.person),
-                const SizedBox(
-                  width: 10,
+                SizedBox(
+                  width: responsiveBloc.gutterWidth,
                 ),
                 Center(
                   child: Column(
                     children: [
-                      Text('GANADOR',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Theme.of(context).primaryColor)),
+                      Text(
+                        'GANADOR',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                       Text('JUGADOR: $winner',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Theme.of(context).primaryColor)),
+                          style: Theme.of(context).textTheme.bodyLarge),
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
+                SizedBox(
+                  height: responsiveBloc.gutterWidth,
                 )
               ],
             ),

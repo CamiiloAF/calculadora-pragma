@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../app_config.dart';
 import '../../blocs/triqui_bloc.dart';
-import '../../helpers/utils.dart';
+import '../../helpers/helpers.dart';
 
 class BottonPlayers extends StatelessWidget {
   const BottonPlayers({

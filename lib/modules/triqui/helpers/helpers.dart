@@ -6,8 +6,8 @@ class Responsive extends EntityHelpers {
     BuildContext context,
     double percent,
   ) {
-    double totalHeight = 892, totalPercent = 100;
-    totalHeight = MediaQuery.of(context).size.height;
+    double totalHeight = MediaQuery.of(context).size.height, totalPercent = 100;
+
     return (percent * totalHeight) / totalPercent;
   }
 
@@ -15,8 +15,7 @@ class Responsive extends EntityHelpers {
     BuildContext context,
     double percent,
   ) {
-    double totalWidth = 412, totalPercent = 100;
-    totalWidth = MediaQuery.of(context).size.width;
-    return (percent * totalWidth) / totalPercent;
+    double totalWidth = MediaQuery.of(context).size.width;
+    return (percent * totalWidth) / 100;
   }
 }
