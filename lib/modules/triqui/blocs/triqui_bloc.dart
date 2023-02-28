@@ -10,10 +10,12 @@ class TriquiBloc extends BlocModule {
 
   List<String> get optionList => _blocTriquiOptionsListGeneral.value.optionList;
   ModelGameState get modelGameState => _blocTriquiOptionsListGeneral.value;
+  Stream<ModelGameState> get modelGameStateStream =>
+      _blocTriquiOptionsListGeneral.stream;
 
-  bool get playerTurn => modelGameState.isPlayerOne;
-  bool get readyPlay => modelGameState.isReadyToPlay;
-  String get winner => modelGameState.nameOfWinner;
+  bool get isPlayerOne => modelGameState.isPlayerOne;
+  bool get isReadyToPlay => modelGameState.isReadyToPlay;
+  String get nameOfWinner => modelGameState.nameOfWinner;
 
   TriquiBloc(this.blocCore);
 
@@ -33,7 +35,7 @@ class TriquiBloc extends BlocModule {
       modelGameState.filledBoxes += 1;
     }
     modelGameState.isPlayerOne = !modelGameState.isPlayerOne;
-    _blocTriquiOptionsListGeneral.value = ModelGameState();
+    _blocTriquiOptionsListGeneral.value = _blocTriquiOptionsListGeneral.value;
   }
 
   void checkWinner() {

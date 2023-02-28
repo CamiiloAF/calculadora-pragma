@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-t';
+
 import '../../../../ui/widgets/responsive/my_app_scaffold_widget.dart';
 import '../../helpers/utils.dart';
 import '../widgets/botton_player_widget.dart';
@@ -22,13 +22,13 @@ class TriquiHomePage extends StatelessWidget {
           children: [
             SizedBox(
                 height: Responsive.distancePercentFromHeight(context, 17.9372)),
-            const BottonPlayers(),
+            const BottonPlayers(), // revisado
             SizedBox(
                 height: Responsive.distancePercentFromHeight(context, 4.9327)),
-            const TriquiCleanWidget(),
+            const TriquiCleanWidget(), // revisado
             SizedBox(
                 height: Responsive.distancePercentFromHeight(context, 6.2780)),
-            const BuilTresEnRaya(),
+            const BuildTresEnRaya(),
             SizedBox(
                 height: Responsive.distancePercentFromHeight(context, 19.3946)),
             const Footer()

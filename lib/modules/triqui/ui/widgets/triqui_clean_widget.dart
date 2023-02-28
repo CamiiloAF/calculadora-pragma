@@ -1,24 +1,29 @@
+import 'package:aleteo_triqui/modules/triqui/models/model_game_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../main.dart';
+import '../../../../app_config.dart';
+import '../../blocs/triqui_bloc.dart';
 
-class TriquiCleanWidget extends ConsumerWidget {
+class TriquiCleanWidget extends StatelessWidget {
   const TriquiCleanWidget({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    final triquiBloc = blocCore.getBlocModule<TriquiBloc>(TriquiBloc.name);
     return TextButton(
-    onPressed: () {
-      ref.read(triquiProvider.notifier).cleanList();
-    }, 
-    child: Text(
-      ref.watch(triquiProvider).readyPlay?'Inicia la partida' : 'Reinicio', 
-      style: const TextStyle(fontSize: 24, color: Colors.black),)
-    );
-    
+        onPressed: () {
+          triquiBloc.cleanList();
+        },
+        child: StreamBuilder<ModelGameState>(
+            stream: triquiBloc.modelGameStateStream,
+            builder: (context, snapshot) {
+              return Text(
+                triquiBloc.isReadyToPlay ? 'Inicia la partida' : 'Reinicio',
+                style: const TextStyle(fontSize: 24, color: Colors.black),
+              );
+            }));
   }
 }
 
@@ -32,7 +37,6 @@ void showGameDialog(BuildContext context, String text) {
           actions: [
             TextButton(
               onPressed: () {
-                
                 Navigator.pop(context);
               },
               child: const Text(
@@ -43,4 +47,3 @@ void showGameDialog(BuildContext context, String text) {
         );
       });
 }
-

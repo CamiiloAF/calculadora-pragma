@@ -1,67 +1,61 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../main.dart';
-import '../../utils/utils.dart';
+import '../../../../app_config.dart';
+import '../../blocs/triqui_bloc.dart';
+import '../../helpers/utils.dart';
 
-class BuilTresEnRaya extends ConsumerWidget {
-  const BuilTresEnRaya({
+class BuildTresEnRaya extends StatelessWidget {
+  const BuildTresEnRaya({
     super.key,
   });
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     //final optionList = TriquiState.of(context).controllerTriqui.modelList.optionList
+    final triquiBloc = blocCore.getBlocModule<TriquiBloc>(TriquiBloc.name);
     return SizedBox(
       height: Responsive.distancePercentFromHeight(context, 37.3049),
       width: Responsive.distancePercentFromWidth(context, 74.2718),
       child: Expanded(
         flex: 3,
-        child: GridView.builder(
-          itemCount: 9,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-          ),
-          itemBuilder: (BuildContext context, int index) {
-            return Consumer(
-              builder: (BuildContext context, WidgetRef ref, Widget? child) {
-                ref.watch(triquiProvider);
-                final optionList = ref.read(triquiProvider.notifier).optionList;
-                return GestureDetector(
-                  onTap: () {
-                    ref.read(triquiProvider.notifier).changeValue(index);
-                    ref.watch(triquiProvider.notifier).checkWinner();
-                    if (ref.read(triquiProvider.notifier).winner != '') {
-                      displayAlert(
-                          context, ref.read(triquiProvider.notifier).winner);
-                    } else if (ref
-                            .read(triquiProvider.notifier)
-                            .modelList
-                            .filledBoxes ==
-                        9) {
-                      displayAlert(context, 'Nadie Gano');
-                    }
-                  },
-                  child: Container(
-                    decoration:
-                        BoxDecoration(border: _getBorder(context, index)),
-                    child: Center(
-                      child: Text(
-                        optionList[index],
-                        style: TextStyle(
-                          color: optionList[index] == 'x'
-                              ? Colors.lightBlueAccent
-                              : Colors.white,
-                          fontSize: 100,
+        child: StreamBuilder(
+            stream: triquiBloc.modelGameStateStream,
+            builder: (context, snapshot) {
+              return GridView.builder(
+                itemCount: 9,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () {
+                      triquiBloc.changeValue(index);
+                      triquiBloc.checkWinner();
+                      if (triquiBloc.nameOfWinner != '') {
+                        displayAlert(context, triquiBloc.nameOfWinner);
+                      } else if (triquiBloc.modelGameState.filledBoxes == 9) {
+                        displayAlert(context, 'Nadie Gano');
+                      }
+                    },
+                    child: Container(
+                      decoration:
+                          BoxDecoration(border: _getBorder(context, index)),
+                      child: Center(
+                        child: Text(
+                          triquiBloc.optionList[index],
+                          style: TextStyle(
+                            color: triquiBloc.optionList[index] == 'x'
+                                ? Theme.of(context).primaryColor
+                                : Theme.of(context).colorScheme.secondary,
+                            fontSize: 100,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
-            );
-          },
-        ),
+                  );
+                },
+              );
+            }),
       ),
     );
   }
