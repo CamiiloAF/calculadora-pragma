@@ -17,25 +17,39 @@ class TriquiBloc extends BlocModule {
   bool get isReadyToPlay => modelGameState.isReadyToPlay;
   String get nameOfWinner => modelGameState.nameOfWinner;
 
-  TriquiBloc(this.blocCore);
+  TriquiBloc(this.blocCore) {
+    print('INICIALIZANDO EL MODELO');
+    print(modelGameState);
+    print(modelGameState);
+  }
 
   final BlocCore blocCore;
 
   void changeValue(int index) {
+    final List<String> listTmp = List.of(modelGameState.optionList);
     if (modelGameState.isPlayerOne && modelGameState.optionList[index] == '') {
-      modelGameState.optionList[index] = 'o';
-      modelGameState.isPlayerOne = true;
-      modelGameState.isReadyToPlay = false;
-      modelGameState.filledBoxes += 1;
+      listTmp[index] = 'o';
+      _updateModelGameState(
+        modelGameState.copyWith(
+            optionList: listTmp,
+            isPlayerOne: true,
+            isReadyToPlay: false,
+            filledBoxes: modelGameState.filledBoxes + 1),
+      );
     } else if (!modelGameState.isPlayerOne &&
         modelGameState.optionList[index] == '') {
-      modelGameState.optionList[index] = 'x';
-      modelGameState.isPlayerOne = false;
-      modelGameState.isReadyToPlay = false;
-      modelGameState.filledBoxes += 1;
+      listTmp[index] = 'x';
+      _updateModelGameState(
+        modelGameState.copyWith(
+            optionList: listTmp,
+            isPlayerOne: false,
+            isReadyToPlay: false,
+            filledBoxes: modelGameState.filledBoxes + 1),
+      );
     }
-    modelGameState.isPlayerOne = !modelGameState.isPlayerOne;
-    _blocTriquiOptionsListGeneral.value = _blocTriquiOptionsListGeneral.value;
+    modelGameState.copyWith(isPlayerOne: modelGameState.isPlayerOne);
+    // modelGameState.isPlayerOne = !modelGameState.isPlayerOne;
+    // _blocTriquiOptionsListGeneral.value = _blocTriquiOptionsListGeneral.value;
   }
 
   void checkWinner() {
@@ -43,46 +57,64 @@ class TriquiBloc extends BlocModule {
     if (modelGameState.optionList[0] == modelGameState.optionList[1] &&
         modelGameState.optionList[0] == modelGameState.optionList[2] &&
         modelGameState.optionList[0] != '') {
-      modelGameState.nameOfWinner = modelGameState.optionList[0];
+      _updateNameOfWinner(modelGameState.optionList[0]);
+//      modelGameState.nameOfWinner = modelGameState.optionList[0];
     } else if (modelGameState.optionList[3] == modelGameState.optionList[4] &&
         modelGameState.optionList[3] == modelGameState.optionList[5] &&
         modelGameState.optionList[3] != '') {
-      modelGameState.nameOfWinner = modelGameState.optionList[3];
+      _updateNameOfWinner(modelGameState.optionList[3]);
+      // modelGameState.nameOfWinner = modelGameState.optionList[3];
     } else if (modelGameState.optionList[6] == modelGameState.optionList[7] &&
         modelGameState.optionList[6] == modelGameState.optionList[8] &&
         modelGameState.optionList[6] != '') {
-      modelGameState.nameOfWinner = modelGameState.optionList[6];
+      _updateNameOfWinner(modelGameState.optionList[6]);
+      // modelGameState.nameOfWinner = modelGameState.optionList[6];
     }
     //columnas
     else if (modelGameState.optionList[0] == modelGameState.optionList[3] &&
         modelGameState.optionList[0] == modelGameState.optionList[6] &&
         modelGameState.optionList[0] != '') {
-      modelGameState.nameOfWinner = modelGameState.optionList[0];
+      _updateNameOfWinner(modelGameState.optionList[0]);
+      // modelGameState.nameOfWinner = modelGameState.optionList[0];
     } else if (modelGameState.optionList[1] == modelGameState.optionList[4] &&
         modelGameState.optionList[1] == modelGameState.optionList[7] &&
         modelGameState.optionList[1] != '') {
-      modelGameState.nameOfWinner = modelGameState.optionList[1];
+      _updateNameOfWinner(modelGameState.optionList[0]);
+      // modelGameState.nameOfWinner = modelGameState.optionList[1];
     } else if (modelGameState.optionList[2] == modelGameState.optionList[5] &&
         modelGameState.optionList[2] == modelGameState.optionList[8] &&
         modelGameState.optionList[2] != '') {
-      modelGameState.nameOfWinner = modelGameState.optionList[2];
+      _updateNameOfWinner(modelGameState.optionList[2]);
+      // modelGameState.nameOfWinner = modelGameState.optionList[2];
     }
     //diagonales
     else if (modelGameState.optionList[0] == modelGameState.optionList[4] &&
         modelGameState.optionList[0] == modelGameState.optionList[8] &&
         modelGameState.optionList[0] != '') {
-      modelGameState.nameOfWinner = modelGameState.optionList[0];
+      _updateNameOfWinner(modelGameState.optionList[0]);
+      // modelGameState.nameOfWinner = modelGameState.optionList[0];
     } else if (modelGameState.optionList[2] == modelGameState.optionList[4] &&
         modelGameState.optionList[2] == modelGameState.optionList[6] &&
         modelGameState.optionList[2] != '') {
-      modelGameState.nameOfWinner = modelGameState.optionList[2];
+      _updateNameOfWinner(modelGameState.optionList[2]);
+      // modelGameState.nameOfWinner = modelGameState.optionList[2];
     } else if (modelGameState.filledBoxes == 9) {
-      modelGameState.nameOfWinner = '';
+      _updateNameOfWinner('');
+      //modelGameState.nameOfWinner = '';
     }
   }
 
+  void _updateNameOfWinner(String nameOfWinner) {
+    _updateModelGameState(
+      modelGameState.copyWith(nameOfWinner: nameOfWinner),
+    );
+  }
+
   void cleanList() {
-    modelGameState.reset();
+    _updateModelGameState(ModelGameState());
+  }
+
+  void _updateModelGameState(ModelGameState modelGameStateTmp) {
     _blocTriquiOptionsListGeneral.value = modelGameState;
   }
 

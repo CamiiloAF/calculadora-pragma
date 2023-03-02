@@ -30,35 +30,60 @@ class BuildTresEnRaya extends StatelessWidget {
                   crossAxisCount: 3,
                 ),
                 itemBuilder: (BuildContext context, int index) {
+                  // print('Verificando la lista');
+                  // print('Verificando la lista');
+                  // print('Verificando la lista');
+                  // print(triquiBloc.optionList);
+                  // print(triquiBloc.optionList.length);
+
                   return GestureDetector(
                     onTap: () {
-                      triquiBloc.changeValue(index);
-                      triquiBloc.checkWinner();
-                      if (triquiBloc.nameOfWinner != '') {
-                        displayAlert(context, triquiBloc.nameOfWinner);
-                      } else if (triquiBloc.modelGameState.filledBoxes == 9) {
-                        displayAlert(context, 'Nadie Gano');
-                      }
+                      print('ME ATRAPASTE');
+                      // triquiBloc.changeValue(index);
+                      // triquiBloc.checkWinner();
+                      // if (triquiBloc.nameOfWinner != '') {
+                      //   displayAlert(context, triquiBloc.nameOfWinner);
+                      // } else if (triquiBloc.modelGameState.filledBoxes == 9) {
+                      //   displayAlert(context, 'Nadie Gano');
+                      // }
                     },
-                    child: Container(
-                      decoration:
-                          BoxDecoration(border: _getBorder(context, index)),
-                      child: Center(
-                        child: Text(
-                          triquiBloc.optionList[index],
-                          style: TextStyle(
-                            color: triquiBloc.optionList[index] == 'x'
-                                ? Theme.of(context).primaryColor
-                                : Theme.of(context).colorScheme.secondary,
-                            fontSize: 100,
-                          ),
-                        ),
-                      ),
+                    child: _TriquiTileWidget(
+                      index: index,
+                      option: 'x',
                     ),
                   );
                 },
               );
             }),
+      ),
+    );
+  }
+}
+
+class _TriquiTileWidget extends StatelessWidget {
+  const _TriquiTileWidget({
+    super.key,
+    required this.option,
+    required this.index,
+  });
+
+  final String option;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(border: _getBorder(context, index)),
+      child: Center(
+        child: Text(
+          option,
+          style: TextStyle(
+            color: option == 'x'
+                ? Theme.of(context).primaryColor
+                : Theme.of(context).colorScheme.secondary,
+            fontSize: 100,
+          ),
+        ),
       ),
     );
   }

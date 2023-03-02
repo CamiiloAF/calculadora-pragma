@@ -6,7 +6,7 @@ import '../../../../blocs/navigator_bloc.dart';
 import '../../../../ui/widgets/custom_fat_button_widget.dart';
 import '../../../../ui/widgets/forms/custom_autocomplete_input_widget.dart';
 import '../../../../ui/widgets/responsive/my_app_scaffold_widget.dart';
-import '../../../triqui/old/main.dart';
+
 import '../../../triqui/ui/pages/triqui_home_page.dart';
 import '../../blocs/counter_bloc.dart';
 import '../widgets/counter_button_widget.dart';
@@ -103,14 +103,14 @@ class CounterHomePage extends StatelessWidget {
               .pushPage('triqui home', const TriquiHomePage());
         },
       ),
-      CounterButtonWidget(
-        label: 'Go to Morellia Triqui',
-        function: () {
-          blocCore
-              .getBlocModule<NavigatorBloc>(NavigatorBloc.name)
-              .pushPage('Morellia home', const TriquiHomeMorelliaPage());
-        },
-      ),
+      // CounterButtonWidget(
+      //   label: 'Go to Morellia Triqui',
+      //   function: () {
+      //     blocCore
+      //         .getBlocModule<NavigatorBloc>(NavigatorBloc.name)
+      //         .pushPage('Morellia home', const TriquiHomeMorelliaPage());
+      //   },
+      // ),
     ];
 
     return MyAppScaffold(
