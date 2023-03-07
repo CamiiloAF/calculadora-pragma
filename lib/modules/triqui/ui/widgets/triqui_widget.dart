@@ -1,71 +1,95 @@
-import 'package:aleteo_triqui/blocs/bloc_responsive.dart';
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../app_config.dart';
+import '../../../../blocs/bloc_responsive.dart';
 import '../../blocs/triqui_bloc.dart';
 import '../../helpers/helpers.dart';
+import '../../models/model_game_state.dart';
 
 class BuildTresEnRaya extends StatelessWidget {
-  const BuildTresEnRaya({
-    super.key,
-  });
+  const BuildTresEnRaya({super.key});
+
   @override
   Widget build(BuildContext context) {
     //final optionList = TriquiState.of(context).controllerTriqui.modelList.optionList
-    final triquiBloc = blocCore.getBlocModule<TriquiBloc>(TriquiBloc.name);
+    //final triquiBloc = blocCore.getBlocModule<TriquiBloc>(TriquiBloc.name);
     final squareEdge =
         Responsive.distancePercentFromWidth(context, 51.47).clamp(200.0, 380.0);
     return SizedBox(
       height: squareEdge,
       width: squareEdge,
-      child: Expanded(
-        flex: 3,
-        child: StreamBuilder(
-            stream: triquiBloc.modelGameStateStream,
-            builder: (context, snapshot) {
-              return GridView.builder(
-                itemCount: 9,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  // print('Verificando la lista');
-                  // print('Verificando la lista');
-                  // print('Verificando la lista');
-                  // print(triquiBloc.optionList);
-                  // print(triquiBloc.optionList.length);
+      child: const _BoardWidget(),
+    );
+  }
+}
 
-                  return GestureDetector(
-                    onTap: () {
-                      print('ME ATRAPASTE');
-                      // triquiBloc.changeValue(index);
-                      // triquiBloc.checkWinner();
-                      // if (triquiBloc.nameOfWinner != '') {
-                      //   displayAlert(context, triquiBloc.nameOfWinner);
-                      // } else if (triquiBloc.modelGameState.filledBoxes == 9) {
-                      //   displayAlert(context, 'Nadie Gano');
-                      // }
-                    },
-                    child: _TriquiTileWidget(
-                      index: index,
-                      option: 'x',
-                    ),
-                  );
-                },
-              );
-            }),
+class _BoardWidget extends StatefulWidget {
+  const _BoardWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<_BoardWidget> createState() => _BoardWidgetState();
+}
+
+class _BoardWidgetState extends State<_BoardWidget> {
+  late StreamSubscription<ModelGameState> streamSubscription;
+  late TriquiBloc triquiBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    triquiBloc = blocCore.getBlocModule<TriquiBloc>(TriquiBloc.name);
+    streamSubscription = triquiBloc.modelGameStateStream.listen((event) {
+      debugPrint('Reconstruyendo');
+      debugPrint(event.toString());
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    streamSubscription.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      itemCount: 9,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
       ),
+      itemBuilder: (BuildContext context, int index) {
+        return GestureDetector(
+          onTap: () {
+            triquiBloc.changeValue(index);
+            triquiBloc.checkWinner();
+            if (triquiBloc.nameOfWinner != '') {
+              displayAlert(context, triquiBloc.nameOfWinner);
+            } else if (triquiBloc.modelGameState.filledBoxes == 9) {
+              displayAlert(context, 'Nadie Gano');
+            }
+          },
+          child: _TriquiTileWidget(
+            index: index,
+            option: triquiBloc.optionList[index],
+          ),
+        );
+      },
     );
   }
 }
 
 class _TriquiTileWidget extends StatelessWidget {
   const _TriquiTileWidget({
-    super.key,
+    Key? key,
     required this.option,
     required this.index,
-  });
+  }) : super(key: key);
 
   final String option;
   final int index;
@@ -80,7 +104,7 @@ class _TriquiTileWidget extends StatelessWidget {
           style: TextStyle(
             color: option == 'x'
                 ? Theme.of(context).primaryColor
-                : Theme.of(context).colorScheme.secondary,
+                : Theme.of(context).primaryColorDark,
             fontSize: 100,
           ),
         ),

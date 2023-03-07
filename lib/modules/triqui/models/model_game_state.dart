@@ -55,12 +55,19 @@ class ModelGameState extends ModelEntity {
         "filledBoxes": filledBoxes,
         "isPlayerOne": isPlayerOne,
         "isReadyToPlay": isReadyToPlay,
+        "hashCode": hashCode
       };
 
-  // @override
-  // bool operator ==(Object other) {
-  //   return super == other;
-  // }
+  @override
+  bool operator ==(Object other) {
+    return other is ModelGameState &&
+        other.runtimeType == runtimeType &&
+        other.hashCode == hashCode;
+  }
+
+  @override
+  int get hashCode =>
+      '$optionList$nameOfWinner$isPlayerOne$isReadyToPlay'.hashCode;
 
   @override
   ModelGameState fromJson(Map<String, dynamic> source) {

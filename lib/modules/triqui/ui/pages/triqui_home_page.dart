@@ -17,24 +17,21 @@ class TriquiHomePage extends StatelessWidget {
       //     child: Text(
       //         '${blocCore.getBlocModule<TriquiBloc>(TriquiBloc.name).modelGameState}'),
       //   ),
-      child: Container(
-        color: Colors.red,
-        child: Column(
-          children: [
-            SizedBox(
-                height: Responsive.distancePercentFromHeight(context, 17.9372)),
-            const BottonPlayers(), // revisado
-            SizedBox(
-                height: Responsive.distancePercentFromHeight(context, 4.9327)),
-            const TriquiCleanWidget(), // revisado
-            SizedBox(
-                height: Responsive.distancePercentFromHeight(context, 6.2780)),
-            const BuildTresEnRaya(),
-            SizedBox(
-                height: Responsive.distancePercentFromHeight(context, 19.3946)),
-            const Footer()
-          ],
-        ),
+      child: Column(
+        children: [
+          SizedBox(
+              height: Responsive.distancePercentFromHeight(context, 17.9372)),
+          const BottonPlayers(), // revisado
+          SizedBox(
+              height: Responsive.distancePercentFromHeight(context, 4.9327)),
+          const TriquiCleanWidget(), // revisado
+          SizedBox(
+              height: Responsive.distancePercentFromHeight(context, 6.2780)),
+          const BuildTresEnRaya(),
+          SizedBox(
+              height: Responsive.distancePercentFromHeight(context, 19.3946)),
+          const Footer()
+        ],
       ),
     );
   }
