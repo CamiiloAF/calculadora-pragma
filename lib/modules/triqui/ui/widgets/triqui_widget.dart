@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../app_config.dart';
-import '../../../../blocs/bloc_responsive.dart';
 import '../../blocs/triqui_bloc.dart';
 import '../../helpers/helpers.dart';
 import '../../models/model_game_state.dart';
@@ -43,9 +41,10 @@ class _BoardWidgetState extends State<_BoardWidget> {
   void initState() {
     super.initState();
     triquiBloc = blocCore.getBlocModule<TriquiBloc>(TriquiBloc.name);
+    triquiBloc.addTestingFunction('imprimeFunction', (val) {
+      debugPrint('Aqui estoy haciendo el tonto: ${val.optionList}');
+    });
     streamSubscription = triquiBloc.modelGameStateStream.listen((event) {
-      debugPrint('Reconstruyendo');
-      debugPrint(event.toString());
       setState(() {});
     });
   }
@@ -66,13 +65,7 @@ class _BoardWidgetState extends State<_BoardWidget> {
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           onTap: () {
-            triquiBloc.changeValue(index);
-            triquiBloc.checkWinner();
-            if (triquiBloc.nameOfWinner != '') {
-              displayAlert(context, triquiBloc.nameOfWinner);
-            } else if (triquiBloc.modelGameState.filledBoxes == 9) {
-              displayAlert(context, 'Nadie Gano');
-            }
+            triquiBloc.playTurn(index, context);
           },
           child: _TriquiTileWidget(
             index: index,
@@ -111,46 +104,6 @@ class _TriquiTileWidget extends StatelessWidget {
       ),
     );
   }
-}
-
-void displayAlert(BuildContext context, String winner) {
-  showCupertinoDialog(
-      barrierDismissible: true,
-      context: context,
-      builder: (context) {
-        final responsiveBloc =
-            blocCore.getBlocModule<ResponsiveBloc>(ResponsiveBloc.name);
-
-        return CupertinoAlertDialog(
-          content: SizedBox(
-            width: responsiveBloc.widthByColumns(2),
-            //Responsive.distancePercentFromWidth(context, 83.4951),
-            child: Row(
-              children: [
-                const Icon(Icons.person),
-                SizedBox(
-                  width: responsiveBloc.gutterWidth,
-                ),
-                Center(
-                  child: Column(
-                    children: [
-                      Text(
-                        'GANADOR',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      Text('JUGADOR: $winner',
-                          style: Theme.of(context).textTheme.bodyLarge),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: responsiveBloc.gutterWidth,
-                )
-              ],
-            ),
-          ),
-        );
-      });
 }
 
 Border _getBorder(BuildContext context, int index) {
