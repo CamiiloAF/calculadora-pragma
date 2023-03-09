@@ -99,9 +99,9 @@ class TriquiBloc extends BlocModule {
 
   List<List<int>> getListWithPosibleTriki(int lastMovement) {
     const List<List<int>> posiblesTrikis = [
-      [0, 1, 2], // filas
-      [3, 4, 5], // filas
-      [6, 7, 8], // filas
+      [0, 1, 2], // rows
+      [3, 4, 5], // rows
+      [6, 7, 8], // rows
       [0, 3, 6], // columns
       [1, 4, 7], // columns
       [2, 5, 8], // columns
