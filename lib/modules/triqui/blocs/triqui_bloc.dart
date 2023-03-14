@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:aleteo_triqui/blocs/bloc_user_notifications.dart';
 import 'package:flutter/material.dart';
 
 import '../../../entities/entity_bloc.dart';
 import '../models/model_game_state.dart';
-import '../ui/widgets/display_alert_function.dart';
 
 class TriquiBloc extends BlocModule {
   static const name = 'triquiBloc';
@@ -33,12 +33,11 @@ class TriquiBloc extends BlocModule {
   void playTurn(int index, BuildContext context) {
     changeValue(index);
     checkWinner(index);
-    if (nameOfWinner != '') {
-      /// TODO use our alert system
-      displayAlert(context, nameOfWinner);
-    } else if (modelGameState.filledBoxes == 9) {
-      displayAlert(context, 'Nadie Gano');
-    }
+    final userNotificationBloc = blocCore
+        .getBlocModule<UserNotificationsBloc>(UserNotificationsBloc.name);
+    final msg =
+        nameOfWinner != '' ? 'GANADOR\nJugador: $nameOfWinner' : 'Nadie Gano';
+    userNotificationBloc.showGeneralAlert(msg);
   }
 
   void changeValue(int index) {

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../../../app_config.dart';
 import '../../../../blocs/bloc_responsive.dart';
+import '../../../../blocs/bloc_user_notifications.dart';
 import '../../../../blocs/navigator_bloc.dart';
 import '../../../../ui/widgets/custom_fat_button_widget.dart';
 import '../../../../ui/widgets/forms/custom_autocomplete_input_widget.dart';
 import '../../../../ui/widgets/responsive/my_app_scaffold_widget.dart';
-
 import '../../../triqui/ui/pages/triqui_home_page.dart';
 import '../../blocs/counter_bloc.dart';
 import '../widgets/counter_button_widget.dart';
@@ -60,6 +60,15 @@ class CounterHomePage extends StatelessWidget {
             label: 'Reset',
             function: () {
               counterBloc.reset();
+            },
+          ),
+          CounterButtonWidget(
+            label: 'Alert',
+            function: () {
+              blocCore
+                  .getBlocModule<UserNotificationsBloc>(
+                      UserNotificationsBloc.name)
+                  .showGeneralAlert('Soy una alerta trasversal');
             },
           ),
         ],
