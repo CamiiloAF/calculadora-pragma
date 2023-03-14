@@ -3,12 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../../../app_config.dart';
+import '../../../../blocs/bloc_responsive.dart';
 import '../../blocs/triqui_bloc.dart';
 import '../../helpers/helpers.dart';
 import '../../models/model_game_state.dart';
 
 class BuildTresEnRaya extends StatelessWidget {
-  const BuildTresEnRaya({super.key});
+  const BuildTresEnRaya({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -90,17 +93,20 @@ class _TriquiTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment.center,
       decoration: BoxDecoration(border: _getBorder(context, index)),
-      child: Center(
-        child: Text(
-          option,
-          style: TextStyle(
-            color: option == 'x'
-                ? Theme.of(context).primaryColor
-                : Theme.of(context).primaryColorDark,
-            fontSize: 100,
-          ),
+      child: Text(
+        option.toUpperCase(),
+        style: TextStyle(
+          color: option == 'x'
+              ? Theme.of(context).primaryColor
+              : Theme.of(context).primaryColorDark,
+          fontSize: blocCore
+              .getBlocModule<ResponsiveBloc>(ResponsiveBloc.name)
+              .dP(100),
+          // fontSize: Responsive.distancePercentFromWidth(context, 5),
         ),
+        textAlign: TextAlign.center,
       ),
     );
   }

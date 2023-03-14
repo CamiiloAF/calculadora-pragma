@@ -97,9 +97,9 @@ class ResponsiveBloc extends BlocModule {
     return tmp;
   }
 
-  double fontSize(int val) {
-    double fontSizeTmp = (size.width / size.height) * val;
-    return fontSizeTmp;
+  double dP(int val) {
+    double dp = (size.width / size.height) * val;
+    return dp;
   }
 
   @override
