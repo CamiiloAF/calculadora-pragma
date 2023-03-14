@@ -9,7 +9,7 @@ import '../ui/widgets/display_alert_function.dart';
 class TriquiBloc extends BlocModule {
   static const name = 'triquiBloc';
   final BlocGeneral<ModelGameState> _blocTriquiOptionsListGeneral =
-      BlocGeneral<ModelGameState>(ModelGameState());
+      BlocGeneral<ModelGameState>(const ModelGameState());
 
   List<String> get optionList => _blocTriquiOptionsListGeneral.value.optionList;
   ModelGameState get modelGameState => _blocTriquiOptionsListGeneral.value;
@@ -79,7 +79,7 @@ class TriquiBloc extends BlocModule {
   }
 
   void cleanList() {
-    _updateModelGameState(ModelGameState());
+    _updateModelGameState(const ModelGameState());
   }
 
   void _updateModelGameState(ModelGameState modelGameStateTmp) {

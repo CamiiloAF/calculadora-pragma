@@ -1,7 +1,7 @@
 import '../../../entities/entity_model.dart';
 
 class ModelGameState extends ModelEntity {
-  ModelGameState({
+  const ModelGameState({
     this.optionList = const [
       '',
       '',
@@ -71,7 +71,7 @@ class ModelGameState extends ModelEntity {
 
   @override
   ModelGameState fromJson(Map<String, dynamic> source) {
-    return ModelGameState();
+    return const ModelGameState();
   }
 }
 

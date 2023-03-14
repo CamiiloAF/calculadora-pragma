@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 abstract class ModelEntity {
+  const ModelEntity();
+
   /// TODO: complete the model abstract class according to firestore documentation
   Map<String, dynamic> toJson() {
     return {};
