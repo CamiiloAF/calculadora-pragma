@@ -1,5 +1,6 @@
-import 'package:aleteo_triqui/entities/entity_helpers.dart';
 import 'package:flutter/material.dart';
+
+import '../../../entities/entity_helpers.dart';
 
 class Responsive extends EntityHelpers {
   static double distancePercentFromHeight(

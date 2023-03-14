@@ -1,5 +1,6 @@
-import 'package:aleteo_triqui/modules/counter/blocs/counter_bloc.dart';
 import 'package:flutter/material.dart';
+
+import '../../blocs/counter_bloc.dart';
 
 class InsectNameWidget extends StatelessWidget {
   const InsectNameWidget({

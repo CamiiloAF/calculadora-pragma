@@ -1,8 +1,8 @@
-import 'package:aleteo_triqui/modules/triqui/models/model_game_state.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../app_config.dart';
 import '../../blocs/triqui_bloc.dart';
+import '../../models/model_game_state.dart';
 
 class TriquiCleanWidget extends StatelessWidget {
   const TriquiCleanWidget({

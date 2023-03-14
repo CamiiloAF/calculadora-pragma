@@ -1,6 +1,7 @@
-import 'package:aleteo_triqui/app_config.dart';
-import 'package:aleteo_triqui/modules/triqui/blocs/triqui_bloc.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../app_config.dart';
+import '../../blocs/triqui_bloc.dart';
 
 class AlertWidget extends StatelessWidget {
   final String winner;
@@ -12,6 +13,8 @@ class AlertWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO revisar el acoplamiento
+
     final triquiBloc = blocCore.getBlocModule<TriquiBloc>(TriquiBloc.name);
 
     return AlertDialog(
