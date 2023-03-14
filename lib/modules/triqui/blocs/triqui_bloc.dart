@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:aleteo_triqui/blocs/bloc_user_notifications.dart';
 import 'package:flutter/material.dart';
 
+import '../../../blocs/bloc_user_notifications.dart';
 import '../../../entities/entity_bloc.dart';
 import '../models/model_game_state.dart';
 
