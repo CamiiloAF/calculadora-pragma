@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../app_config.dart';
 import '../../../blocs/bloc_responsive.dart';
@@ -18,7 +19,8 @@ class CustomAutoCompleteInputWidget extends StatefulWidget {
       this.onEditingValidateFunction = _defaultFunction,
       this.initialData,
       this.keyboardType = TextInputType.text,
-      this.obscureText = false})
+      this.obscureText = false,
+      this.inputFormatters})
       : super(key: key);
 
   final List<String> suggestList;
@@ -28,6 +30,7 @@ class CustomAutoCompleteInputWidget extends StatefulWidget {
   final String? initialData;
   final String? Function(String val) onEditingValidateFunction;
   final TextInputType keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
   final bool obscureText;
 
   @override
@@ -115,6 +118,7 @@ class _CustomAutoCompleteInputWidgetState
             focusNode: focusNode,
             obscureText: widget.obscureText,
             keyboardType: widget.keyboardType,
+            inputFormatters: widget.inputFormatters,
             onEditingComplete: () {
               _onValidate(controller.text);
               widget.onEditingValueFunction(controller.text);

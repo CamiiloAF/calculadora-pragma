@@ -1,18 +1,13 @@
+import 'package:aleteo_triqui/modules/counter/ui/widgets/counter_button_widget.dart';
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../app_config.dart';
 import '../../../../blocs/bloc_responsive.dart';
-import '../../../../blocs/bloc_user_notifications.dart';
-import '../../../../blocs/navigator_bloc.dart';
-import '../../../../ui/widgets/custom_fat_button_widget.dart';
 import '../../../../ui/widgets/forms/custom_autocomplete_input_widget.dart';
 import '../../../../ui/widgets/responsive/my_app_scaffold_widget.dart';
-import '../../../triqui/ui/pages/triqui_home_page.dart';
 import '../../blocs/counter_bloc.dart';
-import '../widgets/counter_button_widget.dart';
-import '../widgets/display_counter_widget.dart';
-import '../widgets/display_size_screen_widget.dart';
-import '../widgets/insect_name_widget.dart';
 
 class CounterHomePage extends StatelessWidget {
   const CounterHomePage({Key? key}) : super(key: key);
@@ -22,104 +17,44 @@ class CounterHomePage extends StatelessWidget {
     final responsiveBloc =
         blocCore.getBlocModule<ResponsiveBloc>(ResponsiveBloc.name);
     final counterBloc = blocCore.getBlocModule<CounterBloc>(CounterBloc.name);
-    double width = 150;
 
-    final fontSize = responsiveBloc.gutterWidth * 2.5;
+    final inputFormatters = [
+      FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
+    ];
 
-    final children = <Widget>[
-      InsectNameWidget(
-        fontSize: fontSize,
-        counterBloc: counterBloc,
-      ),
-      DisplaySizeScreenWidget(
-        responsiveBloc: responsiveBloc,
-        width: width,
-      ),
-      SizedBox(
-        width: responsiveBloc.workAreaSize.width,
-        child: DisplayCounterWidget(
-          fontSize: fontSize,
-          counterBloc: counterBloc,
-        ),
-      ),
-      Wrap(
-        children: [
-          CounterButtonWidget(
-            label: 'Increment',
-            function: () {
-              counterBloc.incrementCounter();
-            },
-          ),
-          CounterButtonWidget(
-            label: 'Decrement',
-            function: () {
-              counterBloc.decrementCounter();
-            },
-          ),
-          CounterButtonWidget(
-            label: 'Reset',
-            function: () {
-              counterBloc.reset();
-            },
-          ),
-          CounterButtonWidget(
-            label: 'Alert',
-            function: () {
-              blocCore
-                  .getBlocModule<UserNotificationsBloc>(
-                      UserNotificationsBloc.name)
-                  .showGeneralAlert('Soy una alerta trasversal');
-            },
-          ),
-        ],
-      ),
-      Wrap(
-        children: [
-          CustomFatButtonWidget(
-            label: 'Hormigas',
-            function: () {
-              counterBloc.setInsectName('Hormigas');
-            },
-          ),
-          CustomFatButtonWidget(
-            label: 'Escarabajos',
-            function: () {
-              counterBloc.setInsectName('Escarabajos');
-            },
-          ),
-          CustomFatButtonWidget(
-            label: 'Grillos',
-            function: () {
-              counterBloc.setInsectName('Grilllos');
-            },
-          ),
-        ],
+    final children = [
+      CustomAutoCompleteInputWidget(
+        onEditingValueFunction: (val) {
+          counterBloc.value1 = val;
+          return null;
+        },
+        label: 'Número 1',
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        inputFormatters: inputFormatters,
       ),
       CustomAutoCompleteInputWidget(
-          suggestList: const ['hormigas', 'escarabajos', 'grillos'],
-          onEditingValueFunction: (value) {
-            if (value.replaceAll(' ', '').isEmpty) {
-              return 'Escribe un nombre. Please';
-            }
-            counterBloc.setInsectName(value);
-            return null;
-          }),
+        onEditingValueFunction: (val) {
+          counterBloc.value2 = val;
+          return null;
+        },
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        inputFormatters: inputFormatters,
+        label: 'Número 2',
+      ),
       CounterButtonWidget(
-        label: 'Go to triqui',
+        label: 'Sumar',
         function: () {
-          blocCore
-              .getBlocModule<NavigatorBloc>(NavigatorBloc.name)
-              .pushPage('triqui home', const TriquiHomePage());
+          counterBloc.calculateSum();
         },
       ),
-      // CounterButtonWidget(
-      //   label: 'Go to Morellia Triqui',
-      //   function: () {
-      //     blocCore
-      //         .getBlocModule<NavigatorBloc>(NavigatorBloc.name)
-      //         .pushPage('Morellia home', const TriquiHomeMorelliaPage());
-      //   },
-      // ),
+      StreamBuilder<Decimal>(
+        stream: counterBloc.sumValueStream,
+        builder: (context, snapshot) {
+          return Text(
+            'Resultado: ${snapshot.data?.toStringAsPrecision(18) ?? '0.0'}',
+          );
+        },
+      )
     ];
 
     return MyAppScaffold(
@@ -134,6 +69,7 @@ class CounterHomePage extends StatelessWidget {
       ),
     );
   }
+
 }
 
 ///
